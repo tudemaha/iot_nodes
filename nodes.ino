@@ -4,6 +4,7 @@
 
 #define DHTPIN 2
 #define MQ135_PIN 13
+#define SOILPIN 12
 
 #define DHTTYPE DHT11
 
@@ -17,13 +18,14 @@ void setup() {
   dht.begin();
 
   Serial.println("Starting MQ-135...");
+  
+  Serial.println("Starting Soil Moisture Sensor...");
+  pinMode(SOILPIN, INPUT);
 }
 
 void loop() {
-  dhtReading read = readDht();
-
-  float ppm = readGas(read.temperature, read.humidity);
-  Serial.println(ppm);
+  float sensor = readSoilMoisture();
+  Serial.println(sensor);
   delay(2000);
 
 }
@@ -46,4 +48,11 @@ float readGas(float temperature, float humidity) {
   float ppm = mq135.getCorrectedPPM(temperature, humidity);
 
   return ppm;
+}
+
+float readSoilMoisture() {
+  int sensor = analogRead(SOILPIN);
+  float soilMoisture = sensor * (100.0 / 4095.0);
+
+  return soilMoisture;
 }
