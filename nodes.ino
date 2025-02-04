@@ -8,6 +8,7 @@
 #define SOILPIN 12
 #define GPS_RX 15
 #define GPS_TX 14
+#define PH_PIN 14
 
 #define DHTTYPE DHT11
 
@@ -28,12 +29,16 @@ void setup() {
 
   Serial.println("Starting GPS...");
   Serial1.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
+
+  Serial.println("Starting pH Sensor...");
+  pinMode(PH_PIN, INPUT);
 }
 
 void loop() {
-  String gps = readGPS();
-  Serial.println(gps);
-  delay(2000);
+  float ph = readPH();
+  Serial.println(ph);
+  Serial.println();
+  delay(1000);
 
 }
 
@@ -82,7 +87,7 @@ String readGPS() {
 
     gps.f_get_position(&flat, &flon, &age);
     String latLon = String(flat, 6) + ", " + String(flon, 6);
-    
+
     return latLon;
   }
 
@@ -98,4 +103,12 @@ String readGPS() {
     Serial.println("No charactes received, check wiring!");
   
   return "0.0, 0.0";
+}
+
+float readPH() {
+  int phADC = analogRead(PH_PIN);
+  Serial.println(phADC);
+  float ph = -0.01734 * phADC + 7.38552;
+  
+  return ph;
 }
