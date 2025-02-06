@@ -6,7 +6,7 @@ dhtReading readDht() {
 
   if(isnan(reading.temperature) || isnan(reading.humidity)) {
     reading.temperature = reading.humidity = 0;
-    Serial.println("Failed to read from DHT sensor.");
+    // Serial.println("Failed to read from DHT sensor.");
   }
 
   return reading;
@@ -49,22 +49,22 @@ String readGPS() {
   }
 
   gps.stats(&chars, &sentences, &failed);
-  Serial.print("CHARS=");
-  Serial.print(chars);
-  Serial.print(" SENTENCES=");
-  Serial.print(sentences);
-  Serial.print(" CSUM ERR=");
-  Serial.println(failed);
+  // Serial.print("CHARS=");
+  // Serial.print(chars);
+  // Serial.print(" SENTENCES=");
+  // Serial.print(sentences);
+  // Serial.print(" CSUM ERR=");
+  // Serial.println(failed);
   
   if(chars == 0)
-    Serial.println("No charactes received, check wiring!");
+    // Serial.println("No charactes received, check wiring!");
   
   return "0.0, 0.0";
 }
 
 float readPH() {
   int phADC = analogRead(PH_PIN);
-  Serial.println(phADC);
+  // Serial.println(phADC);
   float ph = -0.01734 * phADC + 7.38552;
   
   return ph;

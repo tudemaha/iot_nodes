@@ -61,7 +61,7 @@ void initCamera() {
 
   esp_err_t err = esp_camera_init(&config);
   if(err != ESP_OK) {
-    Serial.printf("Camera init failed: 0x%x", err);
+    // Serial.printf("Camera init failed: 0x%x", err);
     delay(500);
     ESP.restart();
   }
@@ -74,11 +74,11 @@ camera_fb_t* takePicture() {
 
   fb = esp_camera_fb_get();
   if(!fb) {
-    Serial.println("Camera capture failed");
+    // Serial.println("Camera capture failed");
     delay(500);
     ESP.restart();
   } else {
-    Serial.println("Captured!");
+    // Serial.println("Captured!");
   }
   
   delay(1000);

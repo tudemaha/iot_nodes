@@ -18,23 +18,23 @@ MQ135 mq135(MQ135_PIN);
 TinyGPS gps;
 
 void setup() {
-  Serial.begin(115200);
+  // Serial.begin(115200);
   
-  Serial.println("Starting DHT11...");
+  // Serial.println("Starting DHT11...");
   dht.begin();
 
-  Serial.println("Starting MQ-135...");
+  // Serial.println("Starting MQ-135...");
   
-  Serial.println("Starting Soil Moisture Sensor...");
+  // Serial.println("Starting Soil Moisture Sensor...");
   pinMode(SOILPIN, INPUT);
 
-  Serial.println("Starting GPS...");
+  // Serial.println("Starting GPS...");
   Serial1.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
 
-  Serial.println("Starting pH Sensor...");
+  // Serial.println("Starting pH Sensor...");
   pinMode(PH_PIN, INPUT);
 
-  Serial.println("Starting Camera...");
+  // Serial.println("Starting Camera...");
   initCamera();
 }
 
