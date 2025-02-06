@@ -39,11 +39,25 @@ void setup() {
 
   // Serial.println("Starting Camera...");
   initCamera();
+
+  // Serial.println("Starting SIM Connection...");
+  Serial.begin(9600, SERIAL_8N1, SIM_RX, SIM_TX);
 }
 
 void loop() {
-  float test = readPH();
+  delay(5 * 60 * 1000);
 
-  delay(3000);
+  payload p;
+  p.node_id = "0194dc54-8715-7da0-864c-7cc6c3d5a77c";
+  p.gateway_id = "0194dc54-ea20-7b4c-b06c-38e171d8ce30";
+  p.dht = readDht();
+  p.gas = readGas(p.dht.temperature, p.dht.humidity);
+  p.soil_moisture = readSoilMoisture();
+  p.coordinate = readGPS();
+  p.soil_ph = readPH();
+  p.image = takePicture();
 
+  postPayload(p);
+
+  esp_camera_fb_return(p.image);
 }
