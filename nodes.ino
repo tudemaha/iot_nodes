@@ -4,12 +4,14 @@
 #include "esp_camera.h"
 #include "helper.h"
 
+#define SIM_RX 3
+#define SIM_TX 1
 #define DHTPIN 2
-#define MQ135_PIN 13
-#define SOILPIN 12
-#define GPS_RX 15
+#define MQ135_PIN 15
+#define SOILPIN 13
+#define GPS_RX 16
 #define GPS_TX 14
-#define PH_PIN 14
+#define PH_PIN 12
 
 #define DHTTYPE DHT11
 
@@ -18,6 +20,7 @@ MQ135 mq135(MQ135_PIN);
 TinyGPS gps;
 
 void setup() {
+  delay(10000);
   // Serial.begin(115200);
   
   // Serial.println("Starting DHT11...");
