@@ -62,6 +62,7 @@ void initCamera() {
   esp_err_t err = esp_camera_init(&config);
   if(err != ESP_OK) {
     // Serial.printf("Camera init failed: 0x%x", err);
+    errorFlash();
     delay(500);
     ESP.restart();
   }
@@ -75,6 +76,7 @@ camera_fb_t* takePicture() {
   fb = esp_camera_fb_get();
   if(!fb) {
     // Serial.println("Camera capture failed");
+    errorFlash();
     delay(500);
     ESP.restart();
   } else {
@@ -85,4 +87,15 @@ camera_fb_t* takePicture() {
   digitalWrite(LED_GPIO_NUM, LOW);
 
   return fb;
+}
+
+void errorFlash() {
+  digitalWrite(LED_GPIO_NUM, HIGH);
+  delay(300);
+  digitalWrite(LED_GPIO_NUM, LOW);
+  delay(300);
+  digitalWrite(LED_GPIO_NUM, HIGH);
+  delay(300);
+  digitalWrite(LED_GPIO_NUM, LOW);
+  delay(300);
 }

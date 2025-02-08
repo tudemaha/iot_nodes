@@ -39,18 +39,18 @@ void postPayload(payload p) {
   String endBoundary = "\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
 
   sendATCommand("AT+HTTPPARA=\"CONTENT\",\"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW\"");
-  sendATCommand("AT+HTTPDATA=" + String(payload.length() + p.image->len) + ",15000");
+  sendATCommand("AT+HTTPDATA=" + String(payload.length() + p.image->len + endBoundary.length()) + ",15000");
   
   sendATCommand(payload);
   uint8_t* fbBuf = p.image->buf;
   size_t fbLen = p.image->len;
   for(size_t n = 0; n < fbLen; n = n + 1024) {
     if(n + 1024 < fbLen) {
-      Serial.write(fbBuf, 1024);
+      Serial2.write(fbBuf, 1024);
       fbBuf += 1024;
     } else if(fbLen % 1024 > 0) {
       size_t remainder = fbLen % 1024;
-      Serial.write(fbBuf, remainder);
+      Serial2.write(fbBuf, remainder);
     }
   }
   sendATCommand(endBoundary);
@@ -64,6 +64,6 @@ void postPayload(payload p) {
 }
 
 void sendATCommand(String command) {
-  Serial.println(command);
+  Serial2.println(command);
   delay(1000);
 }

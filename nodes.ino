@@ -41,11 +41,11 @@ void setup() {
   initCamera();
 
   // Serial.println("Starting SIM Connection...");
-  Serial.begin(9600, SERIAL_8N1, SIM_RX, SIM_TX);
+  Serial2.begin(9600, SERIAL_8N1, SIM_RX, SIM_TX);
 }
 
 void loop() {
-  delay(5 * 60 * 1000);
+  delay(1 * 60 * 1000);
 
   payload p;
   p.node_id = "0194dc54-8715-7da0-864c-7cc6c3d5a77c";
