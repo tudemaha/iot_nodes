@@ -5,7 +5,7 @@ String username = "wap";
 String password = "wap123";
 String endpoint = "34.168.140.97:8081/upload";
 
-void postPayload(payload p) {
+void postPayload(payloadData p) {
   sendATCommand("AT");
   sendATCommand("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"");
   sendATCommand("AT+CSTT=\"" + apn + "\",\"" + username + "\",\"" + password + "\"");
@@ -39,9 +39,9 @@ void postPayload(payload p) {
   String endBoundary = "\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
 
   sendATCommand("AT+HTTPPARA=\"CONTENT\",\"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW\"");
-  sendATCommand("AT+HTTPDATA=" + String(payload.length() + p.image->len + endBoundary.length()) + ",15000");
+  sendATCommand("AT+HTTPDATA=" + String(payload.length() + p.image->len + endBoundary.length()) + ",60000");
   
-  sendATCommand(payload);
+  Serial2.print(payload);
   uint8_t* fbBuf = p.image->buf;
   size_t fbLen = p.image->len;
   for(size_t n = 0; n < fbLen; n = n + 1024) {
@@ -53,7 +53,7 @@ void postPayload(payload p) {
       Serial2.write(fbBuf, remainder);
     }
   }
-  sendATCommand(endBoundary);
+  Serial2.print(endBoundary);
 
   sendATCommand("AT+HTTPACTION=1");
   delay(5000);

@@ -7,7 +7,7 @@ struct dhtReading {
   float humidity;
 };
 
-struct payload {
+struct payloadData {
   String node_id;
   String gateway_id;
   dhtReading dht;

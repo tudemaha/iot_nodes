@@ -22,6 +22,9 @@ TinyGPS gps;
 void setup() {
   delay(10000);
   // Serial.begin(115200);
+
+  // Serial.println("Starting Camera...");
+  initCamera();
   
   // Serial.println("Starting DHT11...");
   dht.begin();
@@ -31,23 +34,20 @@ void setup() {
   // Serial.println("Starting Soil Moisture Sensor...");
   pinMode(SOILPIN, INPUT);
 
-  // Serial.println("Starting GPS...");
-  Serial1.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
-
   // Serial.println("Starting pH Sensor...");
   pinMode(PH_PIN, INPUT);
 
-  // Serial.println("Starting Camera...");
-  initCamera();
+  // Serial.println("Starting GPS...");
+  // Serial1.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
 
   // Serial.println("Starting SIM Connection...");
   Serial2.begin(9600, SERIAL_8N1, SIM_RX, SIM_TX);
 }
 
 void loop() {
-  delay(1 * 60 * 1000);
+  delay(5 * 60 * 1000);
 
-  payload p;
+  payloadData p;
   p.node_id = "0194dc54-8715-7da0-864c-7cc6c3d5a77c";
   p.gateway_id = "0194dc54-ea20-7b4c-b06c-38e171d8ce30";
   p.dht = readDht();

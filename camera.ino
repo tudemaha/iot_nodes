@@ -1,7 +1,7 @@
 #include "esp_camera.h"
-#include "Arduino.h"
-#include "soc/soc.h"
-#include "soc/rtc_cntl_reg.h"
+// #include "Arduino.h"
+// #include "soc/soc.h"
+// #include "soc/rtc_cntl_reg.h"
 
 #define PWDN_GPIO_NUM  32
 #define RESET_GPIO_NUM -1
@@ -25,7 +25,7 @@
 
 void initCamera() {
   pinMode(LED_GPIO_NUM, OUTPUT);
-  WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
+  // WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
 
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
@@ -47,16 +47,20 @@ void initCamera() {
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
-  config.pixel_format = PIXFORMAT_JPEG;  
+  config.frame_size = FRAMESIZE_UXGA;
+  config.pixel_format = PIXFORMAT_JPEG;
+  config.grab_mode = CAMERA_GRAB_WHEN_EMPTY;
+  config.fb_location = CAMERA_FB_IN_PSRAM;
+  config.jpeg_quality = 12;
+  config.fb_count = 1;
 
-  if(psramFound()) {
-    config.frame_size = FRAMESIZE_UXGA;
+  if (psramFound()) {
     config.jpeg_quality = 10;
     config.fb_count = 2;
+    config.grab_mode = CAMERA_GRAB_LATEST;
   } else {
     config.frame_size = FRAMESIZE_SVGA;
-    config.jpeg_quality = 12;
-    config.fb_count = 1;
+    config.fb_location = CAMERA_FB_IN_DRAM;
   }
 
   esp_err_t err = esp_camera_init(&config);
