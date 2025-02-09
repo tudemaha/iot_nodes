@@ -40,7 +40,7 @@ void postPayload(payloadData p) {
   int totalBoundary = payload.length() + p.image->len + endBoundary.length();
 
   sendATCommand("AT+HTTPPARA=\"CONTENT\",\"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW\"");
-  sendATCommand("AT+HTTPDATA=" + String(totalBoundary) + ",60000");
+  sendATCommand("AT+HTTPDATA=" + String(totalBoundary) + ",120000");
   delay(1000);
   
   Serial2.print(payload);

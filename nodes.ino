@@ -41,7 +41,7 @@ void setup() {
   // Serial1.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
 
   // Serial.println("Starting SIM Connection...");
-  Serial2.begin(115200, SERIAL_8N1, SIM_RX, SIM_TX);
+  Serial2.begin(9600, SERIAL_8N1, SIM_RX, SIM_TX);
 }
 
 void loop() {
