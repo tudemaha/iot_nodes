@@ -1,7 +1,7 @@
 #include "esp_camera.h"
 // #include "Arduino.h"
-// #include "soc/soc.h"
-// #include "soc/rtc_cntl_reg.h"
+#include "soc/soc.h"
+#include "soc/rtc_cntl_reg.h"
 
 #define PWDN_GPIO_NUM  32
 #define RESET_GPIO_NUM -1
@@ -25,7 +25,7 @@
 
 void initCamera() {
   pinMode(LED_GPIO_NUM, OUTPUT);
-  // WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
+  WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
 
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;

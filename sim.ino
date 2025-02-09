@@ -37,10 +37,11 @@ void postPayload(payloadData p) {
   payload += "Content-Type: image/jpeg\r\n\r\n";
 
   String endBoundary = "\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+  int totalBoundary = payload.length() + p.image->len + endBoundary.length();
 
   sendATCommand("AT+HTTPPARA=\"CONTENT\",\"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW\"");
-  sendATCommand("AT+HTTPDATA=" + String(payload.length() + p.image->len + endBoundary.length()) + ",60000");
-  delay(100);
+  sendATCommand("AT+HTTPDATA=" + String(totalBoundary) + ",60000");
+  delay(1000);
   
   Serial2.print(payload);
   uint8_t* fbBuf = p.image->buf;
@@ -53,7 +54,7 @@ void postPayload(payloadData p) {
       size_t remainder = fbLen % 1024;
       Serial2.write(fbBuf, remainder);
     }
-    delay(10);
+    delay(20);
   }
   Serial2.print(endBoundary);
 
