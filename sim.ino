@@ -40,6 +40,7 @@ void postPayload(payloadData p) {
 
   sendATCommand("AT+HTTPPARA=\"CONTENT\",\"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW\"");
   sendATCommand("AT+HTTPDATA=" + String(payload.length() + p.image->len + endBoundary.length()) + ",60000");
+  delay(100);
   
   Serial2.print(payload);
   uint8_t* fbBuf = p.image->buf;
@@ -52,6 +53,7 @@ void postPayload(payloadData p) {
       size_t remainder = fbLen % 1024;
       Serial2.write(fbBuf, remainder);
     }
+    delay(10);
   }
   Serial2.print(endBoundary);
 
