@@ -26,7 +26,9 @@ float readSoilMoisture() {
   return soilMoisture;
 }
 
-String readGPS() {
+gpsReading readGPS() {
+  gpsReading gr;
+
   bool newData = false;
   unsigned long chars;
   unsigned short sentences, failed;
@@ -40,12 +42,16 @@ String readGPS() {
 
   if(newData) {
     float flat, flon;
-    unsigned long age;
+    unsigned long age, date, time;
 
     gps.f_get_position(&flat, &flon, &age);
-    String latLon = String(flat, 6) + ", " + String(flon, 6);
+    gps.get_datetime(&date, &time);
+    
+    gr.coordinate = String(flat, 6) + ", " + String(flon, 6);
+    gr.date = String(date, 6);
+    gr.time = String(time, 6);
 
-    return latLon;
+    return gr;
   }
 
   gps.stats(&chars, &sentences, &failed);
@@ -57,8 +63,12 @@ String readGPS() {
   Serial.println(failed);
   
   if(chars == 0) Serial.println("No charactes received, check wiring!");
+
+  gr.coordinate = "0.0, 0.0";
+  gr.date = "0";
+  gr.time = "0";
   
-  return "0.0, 0.0";
+  return gr;
 }
 
 float readPH() {

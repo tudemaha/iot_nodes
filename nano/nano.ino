@@ -64,14 +64,16 @@ String readSensor() {
   float gas = readGas(dht.temperature, dht.humidity);
   float soil_moisture = readSoilMoisture();
   float soil_ph = readPH();
-  String coordinate = readGPS();
+  gpsReading gr = readGPS();
 
   String sensorReading = String(dht.temperature) + ";" +
                          String(dht.humidity) + ";" +
                          String(gas) + ";" +
                          String(soil_moisture) + ";" +
                          String(soil_ph) + ";" +
-                         coordinate;
+                         gr.coordinate + ";" +
+                         gr.date + ";" +
+                         gr.time;
 
   return sensorReading;
 }

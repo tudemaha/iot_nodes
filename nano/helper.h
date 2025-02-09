@@ -7,4 +7,10 @@ struct dhtReading {
   float humidity;
 };
 
+struct gpsReading {
+  String coordinate;
+  String date;
+  String time;
+};
+
 #endif
