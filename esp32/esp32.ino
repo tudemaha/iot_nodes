@@ -18,7 +18,8 @@ void loop() {
   
   camera_fb_t* image = takePicture();
 
-  saveImage(image, sensorData);
+  String filename = generateRandomString(10);
+  saveImage(image, filename);
   delay(200);
 
   saveMetadata(sensorData);
