@@ -48,8 +48,14 @@ gpsReading readGPS() {
     gps.get_datetime(&date, &time);
     
     gr.coordinate = String(flat, 6) + ", " + String(flon, 6);
-    gr.date = String(date, 6);
-    gr.time = String(time, 6);
+    String dateStr = String(date);
+    String timeStr = String(time);
+    
+    for(int i = 0; i < 6 - dateStr.length(); i++) gr.date += "0";
+    gr.date += dateStr;
+
+    for(int i = 0; i < 8 - timeStr.length(); i++) gr.time += "0";
+    gr.time += timeStr;
 
     return gr;
   }

@@ -22,8 +22,7 @@ TinyGPS gps;
 SoftwareSerial gpsSerial(GPS_RX, GPS_TX);
 SoftwareSerial esp32(ESP_RX, ESP_TX);
 
-String serialInput = "";
-String sensorReading = "";
+gpsReading gr;
 
 void setup() {
   Serial.begin(9600);
@@ -47,11 +46,18 @@ void setup() {
 }
 
 void loop() {
+  gr = readGPS();
+
   while(esp32.available() > 0) {
     serialInput = esp32.readString();
     
     if(serialInput == "read") {
       sensorReading = readSensor();
+        
+      sensorReading += gr.coordinate + ";";
+      sensorReading += gr.date + ";";
+      sensorReading += gr.time;
+
       esp32.println(sensorReading);
     }
 
@@ -64,16 +70,11 @@ String readSensor() {
   float gas = readGas(dht.temperature, dht.humidity);
   float soil_moisture = readSoilMoisture();
   float soil_ph = readPH();
-  gpsReading gr = readGPS();
 
   String sensorReading = String(dht.temperature) + ";" +
                          String(dht.humidity) + ";" +
                          String(gas) + ";" +
                          String(soil_moisture) + ";" +
-                         String(soil_ph) + ";" +
-                         gr.coordinate + ";" +
-                         gr.date + ";" +
-                         gr.time;
-
+                         String(soil_ph) + ";";
   return sensorReading;
 }
