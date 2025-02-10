@@ -22,6 +22,8 @@ TinyGPS gps;
 SoftwareSerial gpsSerial(GPS_RX, GPS_TX);
 SoftwareSerial esp32(ESP_RX, ESP_TX);
 
+String serialInput = "";
+String sensorReading = "";
 gpsReading gr;
 
 void setup() {
