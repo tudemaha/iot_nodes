@@ -11,6 +11,8 @@ void setup() {
 }
 
 void loop() {
+  delay(5 * 60 * 1000);
+
   String sensorData = getSensors();
   delay(500);
   

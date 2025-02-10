@@ -76,6 +76,7 @@ camera_fb_t* takePicture() {
   camera_fb_t *fb = NULL;
 
   digitalWrite(LED_GPIO_NUM, HIGH);
+  delay(1000);
 
   fb = esp_camera_fb_get();
   if(!fb) {

@@ -37,7 +37,7 @@ void saveImage(camera_fb_t* image, String filename) {
 }
 
 void saveMetadata(String metadata) {
-  String path = "sensors.csv";
+  String path = "/sensors.csv";
 
   fs::FS &fs = SD_MMC;
 
@@ -45,7 +45,7 @@ void saveMetadata(String metadata) {
   if(!file) {
     // Serial.println("Failed to open file in append mode");
   } else {
-    file.println(metadata);
+    file.print(metadata);
   }
 
   file.close();
