@@ -65,7 +65,7 @@ void loop() {
       sensorReading += gr.date + ";";
       sensorReading += gr.time;
 
-      esp32.println(sensorReading);
+      esp32.print(sensorReading);
     }
 
     serialInput = "";
