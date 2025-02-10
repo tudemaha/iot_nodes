@@ -48,7 +48,12 @@ void setup() {
 }
 
 void loop() {
-  gr = readGPS();
+  gpsReading newGps = readGPS();
+  if(gr.coordinate.length() < 10) {
+    gr.coordinate = newGps.coordinate;
+    gr.date = newGps.date;
+    gr.time = newGps.time;
+  }
 
   while(esp32.available() > 0) {
     serialInput = esp32.readString();
