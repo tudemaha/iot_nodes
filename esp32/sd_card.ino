@@ -45,7 +45,7 @@ void saveMetadata(String metadata) {
   if(!file) {
     // Serial.println("Failed to open file in append mode");
   } else {
-    file.print(metadata);
+    file.println(metadata);
   }
 
   file.close();

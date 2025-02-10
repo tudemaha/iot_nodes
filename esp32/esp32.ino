@@ -22,7 +22,7 @@ void loop() {
   saveImage(image, filename);
   delay(200);
 
-  saveMetadata(sensorData);
+  saveMetadata(sensorData + ";" + filename);
   delay(100);
 
   esp_camera_fb_return(image);
