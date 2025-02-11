@@ -3,6 +3,8 @@
 #define NANO_RX 3
 #define NANO_TX 1
 
+String sensorData,filename = "";
+
 void setup() {
   Serial2.begin(9600, SERIAL_8N1, NANO_RX, NANO_TX);
 
@@ -13,12 +15,12 @@ void setup() {
 void loop() {
   delay(5 * 60 * 1000);
 
-  String sensorData = getSensors();
+  sensorData = getSensors();
   delay(500);
   
   camera_fb_t* image = takePicture();
 
-  String filename = generateRandomString(10);
+  filename = generateRandomString(10);
   saveImage(image, filename);
   delay(200);
 
@@ -26,6 +28,7 @@ void loop() {
   delay(100);
 
   esp_camera_fb_return(image);
+  sensorData = filename = "";
 }
 
 String getSensors() {

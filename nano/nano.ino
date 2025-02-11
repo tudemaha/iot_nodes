@@ -40,7 +40,7 @@ void setup() {
   pinMode(PH_PIN, INPUT);
   Serial.println("pH Sensor Connected.");
 
-  gpsSerial.begin(9600);
+  gpsSerial.begin(4800);
   Serial.println("GPS Connected.");
 
   esp32.begin(9600);
