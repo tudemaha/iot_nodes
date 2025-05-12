@@ -1,30 +1,31 @@
 #include "DHT.h"
 #include "MQ135.h"
 #include "TinyGPS.h"
-#include <SoftwareSerial.h>
 #include "helper.h"
+#include <SoftwareSerial.h>
 
 #define GPS_RX    2
 #define GPS_TX    3
-#define DHTPIN    4
+#define DHT_PIN   4
+#define GSM_RX    5
+#define GSM_TX    6
 #define MQ135_PIN A0
-#define SOILPIN   A1
+#define SOIL_PIN  A1
 #define PH_PIN    A2
-#define ESP_RX    5
-#define ESP_TX    6
 
 #define DHTTYPE   DHT11
 
-DHT dht(DHTPIN, DHTTYPE);
+DHT dht(DHT_PIN, DHTTYPE);
 MQ135 mq135(MQ135_PIN);
 TinyGPS gps;
 
 SoftwareSerial gpsSerial(GPS_RX, GPS_TX);
-SoftwareSerial esp32(ESP_RX, ESP_TX);
+SoftwareSerial gsm(GSM_RX, GSM_TX);
 
-String serialInput = "";
-String sensorReading = "";
-gpsReading gr;
+sensorReading sr;
+
+unsigned long previousMillis = 0;
+const long interval = 5000;
 
 void setup() {
   Serial.begin(9600);
@@ -34,54 +35,59 @@ void setup() {
 
   Serial.println("MQ-135 Connected.");
   
-  pinMode(SOILPIN, INPUT);
+  pinMode(SOIL_PIN, INPUT);
   Serial.println("Soil Moisture Sensor Connected.");
 
   pinMode(PH_PIN, INPUT);
   Serial.println("pH Sensor Connected.");
-
-  gpsSerial.begin(4800);
-  Serial.println("GPS Connected.");
-
-  esp32.begin(9600);
-  Serial.println("ESP32 Connection Created.");
 }
 
 void loop() {
-  gpsReading newGps = readGPS();
-  if(gr.coordinate.length() < 10) {
-    gr.coordinate = newGps.coordinate;
-    gr.date = newGps.date;
-    gr.time = newGps.time;
-  }
+  unsigned long currentMillis = millis();
 
-  while(esp32.available() > 0) {
-    serialInput = esp32.readString();
-    
-    if(serialInput == "read") {
-      sensorReading = readSensor();
-        
-      sensorReading += gr.coordinate + ";";
-      sensorReading += gr.date + ";";
-      sensorReading += gr.time;
+  if(currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
 
-      esp32.print(sensorReading);
-    }
+    startGPS();
+    gpsReading gr = readGPS();
+    endGPS();
+    dhtReading dht = readDht();
+    float gas = readGas(dht.temperature, dht.humidity);
+    float soil_moisture = readSoilMoisture();
+    float soil_ph = readPH();
 
-    serialInput = "";
+    sr.dht = dht;
+    sr.gps = gr;
+    sr.ph = soil_ph;
+    sr.soilMoisture = soil_moisture;
+    sr.gas = gas;
+
+    startGSM();
+    // postPayload(sr);
+    endGSM();
+
+    Serial.println(sr.gps.date);
+    Serial.println(sr.gps.time);
+    Serial.println(sr.dht.temperature);
   }
 }
 
-String readSensor() {
-  dhtReading dht = readDht();
-  float gas = readGas(dht.temperature, dht.humidity);
-  float soil_moisture = readSoilMoisture();
-  float soil_ph = readPH();
+void startGPS() {
+  gpsSerial.begin(9600);
+  Serial.println("GPS Connected.");
+}
 
-  String sensorReading = String(dht.temperature) + ";" +
-                         String(dht.humidity) + ";" +
-                         String(gas) + ";" +
-                         String(soil_moisture) + ";" +
-                         String(soil_ph) + ";";
-  return sensorReading;
+void endGPS() {
+  gpsSerial.end();
+  Serial.println("GPS Disconnected.");
+}
+
+void startGSM() {
+  gsm.begin(9600);
+  Serial.println("GSM Connected.");
+}
+
+void endGSM() {
+  gsm.end();
+  Serial.println("GSM Disconnected.");
 }
