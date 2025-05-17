@@ -13,4 +13,12 @@ struct gpsReading {
   String time;
 };
 
+struct sensorReading {
+  dhtReading dht;
+  gpsReading gps;
+  float ph;
+  float soilMoisture;
+  float gas;
+};
+
 #endif

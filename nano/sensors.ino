@@ -13,14 +13,15 @@ dhtReading readDht() {
 }
 
 
-float readGas(float temperature, float humidity) {
-  float ppm = mq135.getCorrectedPPM(temperature, humidity);
+float readGas() {
+  MQ2.update();
+  float ppm = MQ2.readSensor();
 
   return ppm;
 }
 
 float readSoilMoisture() {
-  int sensor = analogRead(SOILPIN);
+  int sensor = analogRead(SOIL_PIN);
   float soilMoisture = sensor * (100.0 / 1023.0);
 
   return soilMoisture;
@@ -34,7 +35,7 @@ gpsReading readGPS() {
   unsigned short sentences, failed;
 
   for(unsigned long start = millis(); millis() - start < 1000;) {
-    while(gpsSerial.available()) {
+    while(gpsSerial.available() > 0) {
       char c = gpsSerial.read();
       if(gps.encode(c)) newData = true;
     }
@@ -73,7 +74,7 @@ gpsReading readGPS() {
   gr.coordinate = "0.0, 0.0";
   gr.date = "0";
   gr.time = "0";
-  
+
   return gr;
 }
 
