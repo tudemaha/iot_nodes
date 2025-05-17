@@ -13,8 +13,9 @@ dhtReading readDht() {
 }
 
 
-float readGas(float temperature, float humidity) {
-  float ppm = mq135.getCorrectedPPM(temperature, humidity);
+float readGas() {
+  MQ2.update();
+  float ppm = MQ2.readSensor();
 
   return ppm;
 }
