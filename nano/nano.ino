@@ -89,7 +89,7 @@ void loop() {
     // Serial.println(sr.gps.time);
     // Serial.println(sr.dht.temperature);
   // }
-  delay(2000);
+  delay(1000);
 }
 
 void startGPS() {
